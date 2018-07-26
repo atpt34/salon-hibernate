@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="user_t")
-public class User {
+public class User extends AbstractEntity implements Idable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,8 +99,6 @@ public class User {
         return result;
     }
 
-
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -143,14 +141,10 @@ public class User {
         return true;
     }
 
-
-
     @Override
     public String toString() {
-        return "User [id=" + id + ", name=" + name + ", password=" + password + ", email=" + email + ", fullname="
+        return "User [id=" + id +  ", name=" + name + ", password=" + password + ", email=" + email + ", fullname="
                 + fullname + ", role=" + role + "]";
     }
     
-    
-
 }

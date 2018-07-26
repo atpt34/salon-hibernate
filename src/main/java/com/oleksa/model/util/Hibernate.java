@@ -1,7 +1,6 @@
 package com.oleksa.model.util;
 
 import java.util.Properties;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.h2.Driver;
 import org.hibernate.Session;

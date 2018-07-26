@@ -39,7 +39,7 @@ public class UserDaoTest {
             user5 = new User(null, "name5", "password", "email5", "fullname4", "role3");
             userDao.create(user5);
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
     
@@ -89,5 +89,11 @@ public class UserDaoTest {
     public void testUserFindById() throws Exception {
         Optional<User> actual = userDao.findById(1L);
         assertEquals(user1, actual.get());
+    }
+    
+    @Test
+    public void testUserFindByIdNoSuch() throws Exception {
+        Optional<User> actual = userDao.findById(-1L);
+        assertEquals(Optional.empty(), actual);
     }
 }
