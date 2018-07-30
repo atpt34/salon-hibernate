@@ -7,9 +7,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 @Entity
 @Table(name="comment_t")
-public class Comment {
+@Data
+public class Comment implements Idable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,44 +25,24 @@ public class Comment {
     @Column(name="cm_stars")
     private int stars;
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + stars;
-        result = prime * result + ((text == null) ? 0 : text.hashCode());
-        return result;
+    public Comment() {
+        // TODO Auto-generated constructor stub
+    }
+    
+    public Comment(Long id, String text, int stars) {
+        super();
+        this.id = id;
+        this.text = text;
+        this.stars = stars;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Comment other = (Comment) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        if (stars != other.stars)
-            return false;
-        if (text == null) {
-            if (other.text != null)
-                return false;
-        } else if (!text.equals(other.text))
-            return false;
-        return true;
+    public Long getId() {
+        return id;
     }
 
     @Override
-    public String toString() {
-        return "Comment [id=" + id + ", text=" + text + ", stars=" + stars + "]";
+    public void setId(Long id) {
+        this.id  = id;
     }
-    
-    
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,7 +31,7 @@ public class UserDaoTest {
         try {
             user1 = new User(null, "name1", "password", "email1", "fullname", "role1");
             userDao.create(user1);
-            user2 = new User(2L, "name2", "password", "email2", "fullname2", "role2");
+            user2 = new User(null, "name2", "password", "email2", "fullname2", "role2");
             userDao.create(user2);
             user3 = new User(3L, "name3", "password", "email3", "fullname3", "role2");
             userDao.create(user3);
@@ -41,6 +42,14 @@ public class UserDaoTest {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    @AfterClass
+    public static void tearDown() {
+        userDao.deleteById(user1.getId());
+        userDao.deleteById(user2.getId());
+        userDao.deleteById(user3.getId());
+        userDao.deleteById(user4.getId());
     }
     
     @Test
@@ -87,7 +96,7 @@ public class UserDaoTest {
     
     @Test
     public void testUserFindById() throws Exception {
-        Optional<User> actual = userDao.findById(1L);
+        Optional<User> actual = userDao.findById(user1.getId());
         assertEquals(user1, actual.get());
     }
     

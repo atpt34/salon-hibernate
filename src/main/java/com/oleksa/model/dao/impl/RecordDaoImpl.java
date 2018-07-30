@@ -34,8 +34,7 @@ public class RecordDaoImpl extends JdbcTemplate<Record> implements RecordDao {
 
     @Override
     public void deleteById(Long id) {
-        // TODO Auto-generated method stub
-        
+        super.templateDeleteById("delete from Record where id = :id", id);
     }
 
     @Override

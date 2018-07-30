@@ -56,8 +56,9 @@ public class JdbcTemplate<T extends Idable> {
         try (Session session = Hibernate.getSession()) {
             Transaction transaction = session.beginTransaction();
             org.hibernate.query.Query<T> query = session.createQuery(hql, clazz);
+            List<T> result = query.getResultList();
             transaction.commit();
-            return query.getResultList();
+            return result;
         }
     }
     
