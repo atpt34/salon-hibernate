@@ -8,11 +8,15 @@ import java.util.stream.Collectors;
 
 import javax.persistence.*;
 
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name="record_t")
-@Data
+
+@Getter
+@Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Record implements Idable {
 
     @Id
@@ -39,71 +43,10 @@ public class Record implements Idable {
             joinColumns = {@JoinColumn(name = "sr_rc_id")},
             inverseJoinColumns = {@JoinColumn(name = "sr_sc_id")})
     private Set<Schedule> schedules;
-
-    public Record() { }
-
-    public Record(Long id, User client, LocalTime hour, LocalDate day, Comment comment, Set<Schedule> schedules) {
-        this.id = id;
-        this.client = client;
-        this.hour = hour;
-        this.day = day;
-        this.comment = comment;
-        this.schedules = schedules;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public void setClient(User client) {
-        this.client = client;
-    }
-    
-    public User getClient() {
-        return client;
-    }
-    
-    public void setSchedules(Set<Schedule> schedules) {
-        this.schedules = schedules;
-    }
-    
-    public Set<Schedule> getSchedules() {
-        return schedules;
-    }
-    
-    public void setHour(LocalTime hour) {
-        this.hour = hour;
-    }
-    
-    public LocalTime getHour() {
-        return hour;
-    }
-    
-    public void setDay(LocalDate day) {
-        this.day = day;
-    }
-    
-    public LocalDate getDay() {
-        return day;
-    }
-    
-    public void setComment(Comment comment) {
-        this.comment = comment;
-    }
-    
-    public Comment getComment() {
-        return comment;
-    }
     
     @Override
     public int hashCode() {
-        return Objects.hash(id, client, hour, day, comment); //, schedules);
+        return Objects.hash(id, client, hour, day, comment);
     }
 
     @Override
@@ -120,7 +63,6 @@ public class Record implements Idable {
                 && Objects.equals(hour, that.hour)
                 && Objects.equals(day, that.day)
                 && Objects.equals(comment, that.comment);
-//                && Objects.equals(schedules, that.schedules);
     }
 
     @Override

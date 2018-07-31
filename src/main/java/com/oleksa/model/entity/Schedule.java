@@ -18,8 +18,18 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name="schedule_t")
+
+@Getter
+@Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Schedule implements Idable {
 
     @Id
@@ -45,80 +55,9 @@ public class Schedule implements Idable {
     
 //    private Set<LocalTime> freeHours;
     
-    public Schedule() {
-    }
-
-    public Schedule(Long id, User master, LocalDate day, LocalTime startHour, LocalTime endHour, Set<Record> records) {
-        this.id = id;
-        this.master = master;
-        this.day = day;
-        this.startHour = startHour;
-        this.endHour = endHour;
-        this.records = records;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-    public User getMaster() {
-        return master;
-    }
-
-
-    public void setMaster(User master) {
-        this.master = master;
-    }
-
-
-    public LocalDate getDay() {
-        return day;
-    }
-
-
-    public void setDay(LocalDate day) {
-        this.day = day;
-    }
-
-
-    public LocalTime getStartHour() {
-        return startHour;
-    }
-
-
-    public void setStartHour(LocalTime startHour) {
-        this.startHour = startHour;
-    }
-
-
-    public LocalTime getEndHour() {
-        return endHour;
-    }
-
-
-    public void setEndHour(LocalTime endHour) {
-        this.endHour = endHour;
-    }
-
-
-    public Set<Record> getRecords() {
-        return records;
-    }
-
-
-    public void setRecords(Set<Record> records) {
-        this.records = records;
-    }
-
     @Override
     public int hashCode() {
-        return Objects.hash(id, master, day, startHour, endHour);//, records, freeHours);
+        return Objects.hash(id, master, day, startHour, endHour);//, freeHours);
     }
 
     @Override
@@ -135,7 +74,6 @@ public class Schedule implements Idable {
                 && Objects.equals(day, that.day)
                 && Objects.equals(startHour, that.startHour)
                 && Objects.equals(endHour, that.endHour);
-//                && Objects.equals(records, that.records);
 //                && Objects.equals(freeHours, that.freeHours);
     }
 

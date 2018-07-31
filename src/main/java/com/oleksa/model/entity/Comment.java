@@ -7,11 +7,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name="comment_t")
+
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Comment implements Idable {
 
     @Id
@@ -25,24 +30,4 @@ public class Comment implements Idable {
     @Column(name="cm_stars")
     private int stars;
 
-    public Comment() {
-        // TODO Auto-generated constructor stub
-    }
-    
-    public Comment(Long id, String text, int stars) {
-        super();
-        this.id = id;
-        this.text = text;
-        this.stars = stars;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id  = id;
-    }
 }

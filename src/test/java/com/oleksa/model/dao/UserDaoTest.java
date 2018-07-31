@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import com.oleksa.model.dao.impl.UserDaoImpl;
 import com.oleksa.model.entity.User;
+import com.oleksa.model.exception.NotUniqueEmailException;
+import com.oleksa.model.exception.NotUniqueNameException;
 
 public class UserDaoTest {
 
@@ -60,6 +62,30 @@ public class UserDaoTest {
         Long id = user.getId();
         assertNotNull(id);
         assertEquals(user, userDao.findById(id).get());
+    }
+    
+    @Test
+    public void testCreateNotUniqueName() throws Exception {
+        try {
+            userDao.create(user1.toBuilder().email("somenewmail").build());
+            fail();
+        } catch (NotUniqueEmailException e) {
+            fail();
+        } catch (NotUniqueNameException e) {
+            assertNotNull(e);
+        }
+    }
+    
+    @Test
+    public void testCreateNotUniqueEmail() throws Exception {
+        try {
+            userDao.create(user1.toBuilder().name("somenewname").build());
+            fail();
+        } catch (NotUniqueEmailException e) {
+            assertNotNull(e);
+        } catch (NotUniqueNameException e) {
+            fail();
+        }
     }
     
     @Test

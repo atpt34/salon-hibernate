@@ -2,24 +2,29 @@ package com.oleksa.model.dao.impl;
 
 import java.util.List;
 import java.util.Optional;
-
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import java.util.function.BiFunction;
 
 import com.oleksa.model.dao.UserDao;
 import com.oleksa.model.entity.User;
-import com.oleksa.model.util.Hibernate;
+import com.oleksa.model.exception.NotUniqueEmailException;
+import com.oleksa.model.exception.NotUniqueNameException;
 
 public class UserDaoImpl extends JdbcTemplate<User> implements UserDao {
 
-    public User create(User t) throws Exception {
-        super.templateSave(t);
-        return t;
+    private User commonCatch(BiFunction<UserDaoImpl, User, User> f, User t) throws NotUniqueNameException, NotUniqueEmailException {
+        try {
+            return f.apply(this, t);
+        } catch (Exception e) {
+            System.out.println("cause message: " + e.getCause().getMessage());
+//            if (e.getCause().getMessage().matches("UK_\\(US_NAME\\)")) {
+            if (e.getCause().getMessage().contains("US_NAME")) {
+                throw new NotUniqueNameException();
+            }
+            if (e.getCause().getMessage().contains("US_EMAIL")) {
+                throw new NotUniqueEmailException();
+            }
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -28,8 +33,13 @@ public class UserDaoImpl extends JdbcTemplate<User> implements UserDao {
     }
 
     @Override
-    public User update(User t) throws Exception {
-        return super.templateUpdate(t);
+    public User create(User t) throws NotUniqueEmailException, NotUniqueNameException {
+        return commonCatch(UserDaoImpl::templateSave, t);
+    }
+    
+    @Override
+    public User update(User t) throws NotUniqueEmailException, NotUniqueNameException {
+        return commonCatch(UserDaoImpl::templateUpdate, t);
     }
 
     @Override
