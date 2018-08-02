@@ -22,20 +22,17 @@ public class CommentDaoImpl extends JdbcTemplate<Comment> implements CommentDao 
 
     @Override
     public Comment update(Comment t) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        return super.templateUpdate(t);
     }
 
     @Override
     public Optional<Comment> findById(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+        return Optional.ofNullable(super.templateFindById(Comment.class, id));
     }
 
     @Override
     public List<Comment> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        return templateFindAll(Comment.class, "from Comment");
     }
 
 }

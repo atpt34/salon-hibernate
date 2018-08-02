@@ -64,28 +64,16 @@ public class UserDaoTest {
         assertEquals(user, userDao.findById(id).get());
     }
     
-    @Test
+    @Test(expected=NotUniqueNameException.class)
     public void testCreateNotUniqueName() throws Exception {
-        try {
-            userDao.create(user1.toBuilder().email("somenewmail").build());
-            fail();
-        } catch (NotUniqueEmailException e) {
-            fail();
-        } catch (NotUniqueNameException e) {
-            assertNotNull(e);
-        }
+        userDao.create(user1.toBuilder().email("somenewmail").build());
+        fail();
     }
     
-    @Test
+    @Test(expected=NotUniqueEmailException.class)
     public void testCreateNotUniqueEmail() throws Exception {
-        try {
-            userDao.create(user1.toBuilder().name("somenewname").build());
-            fail();
-        } catch (NotUniqueEmailException e) {
-            assertNotNull(e);
-        } catch (NotUniqueNameException e) {
-            fail();
-        }
+        userDao.create(user1.toBuilder().name("somenewname").build());
+        fail();
     }
     
     @Test
@@ -94,6 +82,30 @@ public class UserDaoTest {
         user2.setEmail(email);
         userDao.update(user2);
         assertEquals(user2, userDao.findById(user2.getId()).get());
+    }
+    
+    @Test
+    public void testUpdateNotUniqueName() throws Exception {
+        try {
+            user1.setName("name2");
+            userDao.update(user1);
+            fail();
+        } catch (NotUniqueNameException e) {
+            user1.setName("name1");
+            assertNotNull(e);
+        }
+    }
+    
+    @Test
+    public void testUpdateNotUniqueEmail() throws Exception {
+        try {
+            user1.setEmail("email2");
+            userDao.update(user1);
+            fail();
+        } catch (NotUniqueEmailException e) {
+            user1.setEmail("email1");
+            assertNotNull(e);
+        }
     }
     
     @Test

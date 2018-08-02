@@ -4,18 +4,19 @@ import java.util.List;
 import java.util.Optional;
 
 import com.oleksa.model.dao.RecordDao;
+import com.oleksa.model.dao.UserDao;
 import com.oleksa.model.entity.Record;
 
 public class RecordDaoImpl extends JdbcTemplate<Record> implements RecordDao {
 
     @Override
-    public List<Record> findAllByClientId(int clientId) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Record> findAllByClientId(long clientId) {
+        UserDao userDao = new UserDaoImpl();
+        return super.templateFindByForeignId(Record.class, "client", userDao.findById(clientId).get());
     }
 
     @Override
-    public List<Record> findAllByClientIdWithMaster(int clientId) {
+    public List<Record> findAllByClientIdWithMaster(long clientId) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -39,8 +40,7 @@ public class RecordDaoImpl extends JdbcTemplate<Record> implements RecordDao {
 
     @Override
     public Record update(Record t) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        return super.templateUpdate(t);
     }
 
     @Override

@@ -33,7 +33,10 @@ public class RecordDaoTest {
     private static Record record1;
     private static Record record2;
     private static Record record3;
+    private static Record record4;
+    private static Record record5;
     private static User client;
+    private static User client2;
     private static User master;
     private static Comment comment;
     private static Schedule schedule;
@@ -53,9 +56,13 @@ public class RecordDaoTest {
         System.out.println(record1);
         record2 = new Record(null, client, hour, day, null, null);
         record3 = new Record(null, client, hour, day, null, null);
+        client2 = new User(null, "name111", "password", "email111", "fullname", "role1");
+        record4 = new Record(null, client2, hour, day, null, null);
+        record5 = new Record(null, client2, hour, day, null, null);
         System.out.println(record2);
         try {
             userDao.create(client);
+            userDao.create(client2);
             userDao.create(master);
             commentDao = new CommentDaoImpl();
             commentDao.create(record1.getComment());
@@ -64,6 +71,8 @@ public class RecordDaoTest {
             recordDao.create(record1);
             recordDao.create(record2);
             recordDao.create(record3);
+            recordDao.create(record4);
+            recordDao.create(record5);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -76,7 +85,10 @@ public class RecordDaoTest {
         recordDao.deleteById(record1.getId());
         recordDao.deleteById(record1.getId());
         recordDao.deleteById(record2.getId());
+        recordDao.deleteById(record4.getId());
+        recordDao.deleteById(record5.getId());
         userDao.deleteById(client.getId());
+        userDao.deleteById(client2.getId());
         userDao.deleteById(master.getId());
         commentDao.deleteById(comment.getId());
     }
@@ -103,4 +115,10 @@ public class RecordDaoTest {
         System.out.println(actual);
         assertEquals(new ArrayList<>(List.of(record1, record2)), actual.stream().limit(2).collect(Collectors.toList()));
     }
+    
+    @Test
+    public void testFindAllByClientId() {
+        assertEquals(new ArrayList<>(List.of(record4, record5)), recordDao.findAllByClientId(client2.getId()));
+    }
+    
 }

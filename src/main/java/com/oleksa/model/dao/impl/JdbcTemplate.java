@@ -12,7 +12,9 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.oleksa.model.dao.UserDao;
 import com.oleksa.model.entity.Idable;
+import com.oleksa.model.entity.Record;
 import com.oleksa.model.util.Hibernate;
 
 public class JdbcTemplate<T extends Idable> {
@@ -67,6 +69,19 @@ public class JdbcTemplate<T extends Idable> {
             return session.find(clazz, id);
         } catch (IllegalArgumentException e) {
             return null;
+        }
+    }
+    
+    public <U> List<T> templateFindByForeignId(Class<T> clazz, String foreignName, U foreignObject) {
+        try (Session session = Hibernate.getSession()) {
+            Transaction transaction = session.beginTransaction();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(clazz);
+            Root<T> root = criteriaQuery.from(clazz);
+            criteriaQuery.where(criteriaBuilder.equal(root.get(foreignName), foreignObject));
+            List<T> result = session.createQuery(criteriaQuery).getResultList();
+            transaction.commit();
+            return result;
         }
     }
     

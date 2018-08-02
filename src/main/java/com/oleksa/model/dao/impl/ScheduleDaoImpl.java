@@ -20,20 +20,17 @@ public class ScheduleDaoImpl extends JdbcTemplate<Schedule> implements ScheduleD
 
     @Override
     public Schedule update(Schedule t) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        return super.templateUpdate(t);
     }
 
     @Override
     public Optional<Schedule> findById(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+        return Optional.ofNullable(super.templateFindById(Schedule.class, id));
     }
 
     @Override
     public List<Schedule> findAll() {
-        // TODO Auto-generated method stub
-        return null;
+        return super.templateFindAll(Schedule.class, "from Schedule");
     }
 
 }

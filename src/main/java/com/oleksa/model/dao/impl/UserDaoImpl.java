@@ -15,16 +15,27 @@ public class UserDaoImpl extends JdbcTemplate<User> implements UserDao {
         try {
             return f.apply(this, t);
         } catch (Exception e) {
-            System.out.println("cause message: " + e.getCause().getMessage());
-//            if (e.getCause().getMessage().matches("UK_\\(US_NAME\\)")) {
-            if (e.getCause().getMessage().contains("US_NAME")) {
-                throw new NotUniqueNameException();
-            }
-            if (e.getCause().getMessage().contains("US_EMAIL")) {
-                throw new NotUniqueEmailException();
-            }
+            findConstrainViolation(e);
             throw new RuntimeException(e);
         }
+    }
+    
+    public void findConstrainViolation(Throwable e) 
+            throws NotUniqueNameException, NotUniqueEmailException {
+        if (e == null) {
+            return;
+        }
+        String causeMessage = e.getMessage();
+        System.out.println("cause message: " + causeMessage);
+        String uk_us_name_pattern = "US_NAME";
+        if (causeMessage.contains(uk_us_name_pattern)) {
+            throw new NotUniqueNameException();
+        }
+        String uk_us_email_pattern = ".*UK_.*(US_EMAIL)(.*\n)*.*";
+        if (causeMessage.matches(uk_us_email_pattern)) {
+            throw new NotUniqueEmailException();
+        }
+        findConstrainViolation(e.getCause());
     }
 
     @Override
